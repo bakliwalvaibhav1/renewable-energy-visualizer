@@ -1,17 +1,18 @@
 from fastapi import APIRouter
+from app.schemas.auth import UserRegister, UserLogin
 
 router = APIRouter()
 
 @router.post("/register")
-def register():
+def register(user: UserRegister):
     """
     Register a new user.
     """
-    return {"message": "Register endpoint"}
+    return {"email": user.email}
 
 @router.post("/login")
-def login():
+def login(user: UserLogin):
     """
     Authenticate a user and return a token.
     """
-    return {"message": "Login endpoint"}
+    return {"email": user.email}

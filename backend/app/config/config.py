@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+import logging
 
 # Load environment variables from .env file
 load_dotenv()
@@ -11,6 +12,10 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ["ACCESS_TOKEN_EXPIRE_MINUTES"])
 
 # LOGGING
 LOG_LEVEL = os.environ["LOG_LEVEL"]
+LOG_FORMATTER = logging.Formatter(
+    "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
 
 # POSTGRES_DB
 POSTGRES_DB = os.environ["POSTGRES_DB"]

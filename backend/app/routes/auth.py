@@ -1,14 +1,13 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.schemas.user import UserCreate
-from app.models.user import User
-from app.core.security import hash_password, verify_password, create_access_token, get_current_user
 from app.core.database import get_db
 from app.core.logger import setup_logger
+from app.core.security import create_access_token, get_current_user, hash_password, verify_password
+from app.models.user import User
+from app.schemas.user import UserCreate
 
 router = APIRouter(tags=["Auth"])
 logger = setup_logger(__name__)

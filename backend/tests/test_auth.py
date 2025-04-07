@@ -1,5 +1,7 @@
-import pytest
 import uuid
+
+import pytest
+
 
 @pytest.mark.asyncio
 async def test_register_user(async_client):

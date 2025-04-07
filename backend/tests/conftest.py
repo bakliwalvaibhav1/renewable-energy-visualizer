@@ -1,10 +1,9 @@
-from typing import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator, Generator
+
 import pytest
 import pytest_asyncio
-import asyncio
-
 from fastapi.testclient import TestClient
-from httpx import AsyncClient, ASGITransport
+from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 

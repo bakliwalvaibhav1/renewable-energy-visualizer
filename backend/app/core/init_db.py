@@ -1,11 +1,12 @@
 import asyncio
+
 from sqlalchemy.future import select
 
-from app.core.database import engine, AsyncSessionLocal
-from app.models.user import User
+from app.core.database import AsyncSessionLocal, engine
+from app.core.logger import setup_logger
 from app.core.security import hash_password
 from app.models.base import Base
-from app.core.logger import setup_logger
+from app.models.user import User
 
 logger = setup_logger(__name__)
 

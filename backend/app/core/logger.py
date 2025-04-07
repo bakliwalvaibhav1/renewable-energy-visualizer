@@ -1,5 +1,7 @@
 import logging
+
 from app.config import config
+
 
 def setup_logger(name: str) -> logging.Logger:
     """

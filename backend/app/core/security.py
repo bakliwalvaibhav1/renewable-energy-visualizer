@@ -3,11 +3,11 @@ from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from app.config import config
 
-# TEMP: Will be moved to .env later
-SECRET_KEY = "supersecretkey123"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = config.SECRET_KEY
+ALGORITHM = config.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = config.ACCESS_TOKEN_EXPIRE_MINUTES
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 

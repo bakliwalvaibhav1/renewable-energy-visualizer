@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.schemas.auth import UserRegister, UserLogin
-from app.core.security import hash_password
+from app.core.security import hash_password, create_access_token
 
 router = APIRouter()
 
@@ -15,6 +15,7 @@ def register(user: UserRegister):
 @router.post("/login")
 def login(user: UserLogin):
     """
-    Authenticate a user and return a token.
+    Authenticate a user and return a JWT token.
     """
-    return {"email": user.email}
+    access_token = create_access_token(data={"sub": user.email})
+    return {"access_token": access_token, "token_type": "bearer"}

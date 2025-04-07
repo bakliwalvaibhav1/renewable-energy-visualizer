@@ -16,6 +16,7 @@ LOG_FORMATTER = logging.Formatter(
     "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S"
 )
+SQLALCHEMY_ECHO = os.environ["SQLALCHEMY_ECHO"].lower() == "FALSE"
 
 # POSTGRES_DB
 POSTGRES_DB = os.environ["POSTGRES_DB"]

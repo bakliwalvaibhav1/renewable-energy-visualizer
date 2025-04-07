@@ -6,7 +6,7 @@ from app.models import Base
 metadata = Base.metadata
 
 # Create async SQLAlchemy engine
-engine = create_async_engine(config.DATABASE_URL, echo=True)
+engine = create_async_engine(config.DATABASE_URL, echo=config.SQLALCHEMY_ECHO)
 
 # Create session factory
 AsyncSessionLocal = sessionmaker(

@@ -9,7 +9,7 @@ from app.core.security import create_access_token, get_current_user, hash_passwo
 from app.models.user import User
 from app.schemas.user import UserCreate
 
-router = APIRouter(tags=["Auth"])
+router = APIRouter()
 logger = setup_logger(__name__)
 
 @router.post("/register", status_code=201)

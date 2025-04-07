@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 
-class UserRegister(BaseModel):
+class UserCreate(BaseModel):
     """
     Request schema for user registration.
     """

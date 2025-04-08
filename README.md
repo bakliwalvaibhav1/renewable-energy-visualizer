@@ -32,12 +32,17 @@ A full-stack web application to track, analyze, and visualize renewable energy d
 git clone https://github.com/bakliwalvaibhav1/renewable-energy-visualizer.git
 ```
 
+### Change the directory
+```bash
+cd renewable-energy-visualizer
+```
+
 ### Build and run the entire stack using Docker Compose
 ```bash
 docker-compose up --build
 ```
 
-#### Access the application:
+### Access the application:
    - Frontend: `http://localhost:3000`
    - Backend API docs: `http://localhost:8000/docs`
 

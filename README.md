@@ -27,17 +27,17 @@ A full-stack web application to track, analyze, and visualize renewable energy d
 
 ## 🚀 Getting Started
 
-1. Clone the repository
+### Clone the repository
+```bash
+git clone https://github.com/bakliwalvaibhav1/renewable-energy-visualizer.git
+```
 
-2. Create a `.env` file for the backend. You can start with the provided `.env.example`.
+### Build and run the entire stack using Docker Compose
+```bash
+docker-compose up --build
+```
 
-3. Build and run the entire stack using Docker Compose
-
-   - This will automatically initialize the database
-   - Backend will run on port 8000
-   - Frontend (Vite dev server) will run on port 3000
-
-4. Access the application:
+#### Access the application:
    - Frontend: `http://localhost:3000`
    - Backend API docs: `http://localhost:8000/docs`
 

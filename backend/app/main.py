@@ -7,8 +7,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React frontend dev URL (Vite)
-    # allow_origins=["http://localhost:3000"],  # React frontend dev URL (Docker)
+    # allow_origins=["http://localhost:5173"],  # React frontend dev URL (Vite)
+    allow_origins=["http://localhost:3000"],  # React frontend dev URL (Docker)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

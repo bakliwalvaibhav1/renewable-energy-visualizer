@@ -15,18 +15,6 @@ const navItems: NavItem[] = [
     name: "Dashboard",
     path: "/dashboard",
   },
-  {
-    // icon: <PlusIcon />,
-    name: "User Profile",
-    path: "/dashboard",
-  },
-  {
-    name: "Pages",
-    // icon: <PlusIcon />,
-    subItems: [
-      { name: "404 Error", path: "/error-404", pro: false },
-    ],
-  },
 ];
 
 

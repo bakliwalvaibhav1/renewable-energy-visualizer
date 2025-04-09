@@ -23,7 +23,7 @@ A full-stack web application to track, analyze, and visualize renewable energy d
 **Backend**: FastAPI, SQLAlchemy (async), Pydantic, bcrypt, JWT  
 **Database**: PostgreSQL  
 **DevOps**: Docker, Docker Compose, GitHub Actions  
-**Testing & Linting**: Pytest, httpx, Ruff, Mypy, Bandit
+**Testing & Linting**: Pytest, httpx, Ruff, Mypy, Bandit [![Ruff Lint](https://github.com/bakliwalvaibhav1/renewable-energy-visualizer/actions/workflows/lint.yml/badge.svg)](https://github.com/bakliwalvaibhav1/renewable-energy-visualizer/actions/workflows/lint.yml)
 
 ---
 

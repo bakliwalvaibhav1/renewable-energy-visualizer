@@ -39,12 +39,16 @@ export default function EnergyChart() {
     }, []);
 
     const [dateRange, setDateRange] = useState<[number, number]>([0, 0]);
-
     const [showConsumption, setShowConsumption] = useState(true);
     const [showGeneration, setShowGeneration] = useState(true);
-
     const [consumptionData, setConsumptionData] = useState<any[]>([]);
     const [generationData, setGenerationData] = useState<any[]>([]);
+
+    const [allLocations, setAllLocations] = useState<string[]>([]);
+    const [consumptionLocations, setConsumptionLocations] = useState<string[]>([]);
+    const [generationLocations, setGenerationLocations] = useState<string[]>([]);
+    const [selectedConsumptionLocations, setSelectedConsumptionLocations] = useState<string[]>([]);
+    const [selectedGenerationLocations, setSelectedGenerationLocations] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchConsumption = async () => {
@@ -63,24 +67,38 @@ export default function EnergyChart() {
                 console.error("Failed to fetch generation data", err);
             }
         };
+
+        fetchConsumption();
+        fetchGeneration();
+    }, []);
+
+    useEffect(() => {
         if (dateList.length > 0) {
             const defaultStart = dayjs("2025-01-01");
             const defaultEnd = dayjs("2025-04-08");
-        
-            const startIndex = dateList.findIndex(d => dayjs(d).isSame(defaultStart, "day"));
-            const endIndex = dateList.findIndex(d => dayjs(d).isSame(defaultEnd, "day"));
-        
+
+            const startIndex = dateList.findIndex((d) => dayjs(d).isSame(defaultStart, "day"));
+            const endIndex = dateList.findIndex((d) => dayjs(d).isSame(defaultEnd, "day"));
+
             if (startIndex !== -1 && endIndex !== -1) {
                 setDateRange([startIndex, endIndex]);
             } else {
                 setDateRange([0, dateList.length - 1]);
             }
         }
-        
-
-        fetchConsumption();
-        fetchGeneration();
     }, [dateList]);
+
+    useEffect(() => {
+        const consumptionLocs = new Set(consumptionData.map((item) => item.location));
+        const generationLocs = new Set(generationData.map((item) => item.location));
+        const allLocs = new Set([...consumptionLocs, ...generationLocs]);
+
+        setAllLocations(Array.from(allLocs));
+        setConsumptionLocations(Array.from(consumptionLocs));
+        setGenerationLocations(Array.from(generationLocs));
+        setSelectedConsumptionLocations(Array.from(consumptionLocs));
+        setSelectedGenerationLocations(Array.from(generationLocs));
+    }, [consumptionData, generationData]);
 
     const startDate = dayjs(dateList[dateRange[0]]);
     const endDate = dayjs(dateList[dateRange[1]]);
@@ -88,6 +106,7 @@ export default function EnergyChart() {
     const filteredConsumption = consumptionData.filter((entry) => {
         const entryDate = dayjs(entry.timestamp);
         return (
+            selectedConsumptionLocations.includes(entry.location) &&
             entryDate.isAfter(startDate.subtract(1, "day")) &&
             entryDate.isBefore(endDate.add(1, "day"))
         );
@@ -96,13 +115,12 @@ export default function EnergyChart() {
     const filteredGeneration = generationData.filter((entry) => {
         const entryDate = dayjs(entry.timestamp);
         return (
+            selectedGenerationLocations.includes(entry.location) &&
             entryDate.isAfter(startDate.subtract(1, "day")) &&
             entryDate.isBefore(endDate.add(1, "day"))
         );
     });
 
-
-    // Group and sum by date
     const groupByDate = (data: any[]) => {
         const totals: Record<string, number> = {};
         data.forEach(({ timestamp, energy_kwh }) => {
@@ -115,12 +133,8 @@ export default function EnergyChart() {
     const consumptionTotals = groupByDate(filteredConsumption);
     const generationTotals = groupByDate(filteredGeneration);
 
-    // All unique dates sorted
     const allDates = Array.from(
-        new Set([
-            ...Object.keys(consumptionTotals),
-            ...Object.keys(generationTotals),
-        ])
+        new Set([...Object.keys(consumptionTotals), ...Object.keys(generationTotals)])
     ).sort();
 
     const labels = allDates;
@@ -155,9 +169,7 @@ export default function EnergyChart() {
 
     const options: ChartOptions<"line"> = {
         responsive: true,
-        plugins: {
-            legend: { display: true },
-        },
+        plugins: { legend: { display: true } },
         scales: {
             x: {
                 ticks: {
@@ -199,6 +211,12 @@ export default function EnergyChart() {
                 dateList={dateList}
                 minDate={0}
                 maxDate={dateList.length - 1}
+                consumptionLocations={consumptionLocations}
+                selectedConsumptionLocations={selectedConsumptionLocations}
+                setSelectedConsumptionLocations={setSelectedConsumptionLocations}
+                generationLocations={generationLocations}
+                selectedGenerationLocations={selectedGenerationLocations}
+                setSelectedGenerationLocations={setSelectedGenerationLocations}
             />
             <div className="w-full min-w-[600px]">
                 <Line data={data} options={options} />

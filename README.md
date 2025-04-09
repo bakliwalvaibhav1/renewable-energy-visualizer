@@ -17,6 +17,8 @@ A full-stack web application to track, analyze, and visualize renewable energy d
 
 ## 🧰 Tech Stack
 
+[![My Skills](https://skillicons.dev/icons?i=react,tailwind,py,fastapi,postgres,docker,githubactions)](https://skillicons.dev)
+
 **Frontend**: React (TypeScript), Tailwind CSS, Axios, Chart.js  
 **Backend**: FastAPI, SQLAlchemy (async), Pydantic, bcrypt, JWT  
 **Database**: PostgreSQL  
@@ -26,6 +28,8 @@ A full-stack web application to track, analyze, and visualize renewable energy d
 ---
 
 ## 🚀 Getting Started
+### Prerequisite
+Docker should be installed on the system. (Check with the command - `docker --version`)
 
 ### Clone the repository
 ```bash

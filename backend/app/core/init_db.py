@@ -52,7 +52,10 @@ async def init_models():
             logger.info("ℹ️ Demo user already exists. Skipping creation.")
 
         # ⚡ Insert energy generation data
-        if os.path.exists(GEN_CSV):
+        gen_result = await session.execute(select(EnergyGeneration).limit(1))
+        gen_exists = gen_result.scalar_one_or_none()
+
+        if not gen_exists and os.path.exists(GEN_CSV):
             logger.info(f"📥 Loading energy generation data from '{GEN_CSV}'...")
             with open(GEN_CSV, newline="") as f:
                 reader = csv.DictReader(f)
@@ -70,11 +73,16 @@ async def init_models():
             session.add_all(gen_entries)
             await session.commit()
             logger.info(f"✅ Inserted {len(gen_entries)} energy generation rows.")
+        elif gen_exists:
+            logger.info("ℹ️ Energy generation data already exists. Skipping CSV import.")
         else:
             logger.warning(f"⚠️ Generation CSV not found at '{GEN_CSV}'.")
 
         # 🔌 Insert energy consumption data
-        if os.path.exists(CONSUMPTION_CSV):
+        cons_result = await session.execute(select(EnergyConsumption).limit(1))
+        cons_exists = cons_result.scalar_one_or_none()
+
+        if not cons_exists and os.path.exists(CONSUMPTION_CSV):
             logger.info(f"📥 Loading energy consumption data from '{CONSUMPTION_CSV}'...")
             with open(CONSUMPTION_CSV, newline="") as f:
                 reader = csv.DictReader(f)
@@ -94,6 +102,8 @@ async def init_models():
             session.add_all(consumption_entries)
             await session.commit()
             logger.info(f"✅ Inserted {len(consumption_entries)} energy consumption rows.")
+        elif cons_exists:
+            logger.info("ℹ️ Energy consumption data already exists. Skipping CSV import.")
         else:
             logger.warning(f"⚠️ Consumption CSV not found at '{CONSUMPTION_CSV}'.")
 

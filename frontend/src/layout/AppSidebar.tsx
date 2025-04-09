@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
+import EcoViewLogo from "../assets/EcoView.png";
 
 type NavItem = {
   name: string;
@@ -211,6 +212,9 @@ const AppSidebar: React.FC = () => {
       onMouseEnter={() => !isExpanded && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      <div className="flex align-items-center">
+        <img src={EcoViewLogo} alt="EcoView" className="w-20 mb-6 mt-4" />
+      </div>
       <div
         className={`py-8 flex ${
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"

@@ -57,16 +57,16 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 via-white to-green-200">
-            <div className="max-w-md w-full mx-auto p-6 shadow-xl rounded bg-white">
-                <div className="flex justify-center mb-6">
-                    <img
-                        src={EcoView}
-                        alt="EcoView Logo"
-                        className="h-16 w-auto"
-                    />
-                </div>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-green-100 via-white to-green-200">
+            {/* 🌿 EcoView Logo */}
+            <img
+                src={EcoView}
+                alt="EcoView Logo"
+                className="h-24 mb-6 drop-shadow"
+            />
 
+            {/* 💻 Login/Register Card */}
+            <div className="max-w-md w-full p-6 shadow-xl rounded bg-white">
                 {/* Toggle Tabs */}
                 <div className="flex justify-center gap-4 mb-6">
                     <button
@@ -93,7 +93,7 @@ export default function Login() {
                     </button>
                 </div>
 
-                {/* Login / Register Form */}
+                {/* Login/Register Form */}
                 <form
                     onSubmit={mode === "login" ? handleLogin : handleRegister}
                     className="space-y-4"

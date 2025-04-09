@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { Line } from "react-chartjs-2";
-import { api } from "../../../library/axios";
+// import { api } from "../../../library/axios";
 import Filters from "./Filters";
 import dayjs from "dayjs";
 
@@ -26,7 +26,13 @@ ChartJS.register(
     Legend
 );
 
-export default function EnergyChart() {
+type EnergyChartProps = {
+    consumptionData: any[];
+    generationData: any[];
+};
+
+
+export default function EnergyChart({ consumptionData, generationData }: EnergyChartProps) {
     const dateList = useMemo(() => {
         const dates = [];
         let current = dayjs("2023-01-01");
@@ -41,8 +47,8 @@ export default function EnergyChart() {
     const [dateRange, setDateRange] = useState<[number, number]>([0, 0]);
     const [showConsumption, setShowConsumption] = useState(true);
     const [showGeneration, setShowGeneration] = useState(true);
-    const [consumptionData, setConsumptionData] = useState<any[]>([]);
-    const [generationData, setGenerationData] = useState<any[]>([]);
+    // const [consumptionData, setConsumptionData] = useState<any[]>([]);
+    // const [generationData, setGenerationData] = useState<any[]>([]);
 
     // const [allLocations, setAllLocations] = useState<string[]>([]);
     const [consumptionLocations, setConsumptionLocations] = useState<string[]>([]);
@@ -50,27 +56,27 @@ export default function EnergyChart() {
     const [selectedConsumptionLocations, setSelectedConsumptionLocations] = useState<string[]>([]);
     const [selectedGenerationLocations, setSelectedGenerationLocations] = useState<string[]>([]);
 
-    useEffect(() => {
-        const fetchConsumption = async () => {
-            try {
-                const res = await api.get("/energy/consumption");
-                setConsumptionData(res.data);
-            } catch (err) {
-                console.error("Failed to fetch consumption data", err);
-            }
-        };
-        const fetchGeneration = async () => {
-            try {
-                const res = await api.get("/energy/generation");
-                setGenerationData(res.data);
-            } catch (err) {
-                console.error("Failed to fetch generation data", err);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchConsumption = async () => {
+    //         try {
+    //             const res = await api.get("/energy/consumption");
+    //             setConsumptionData(res.data);
+    //         } catch (err) {
+    //             console.error("Failed to fetch consumption data", err);
+    //         }
+    //     };
+    //     const fetchGeneration = async () => {
+    //         try {
+    //             const res = await api.get("/energy/generation");
+    //             setGenerationData(res.data);
+    //         } catch (err) {
+    //             console.error("Failed to fetch generation data", err);
+    //         }
+    //     };
 
-        fetchConsumption();
-        fetchGeneration();
-    }, []);
+    //     fetchConsumption();
+    //     fetchGeneration();
+    // }, []);
 
     useEffect(() => {
         if (dateList.length > 0) {
@@ -216,6 +222,7 @@ export default function EnergyChart() {
                 selectedGenerationLocations={selectedGenerationLocations}
                 setSelectedGenerationLocations={setSelectedGenerationLocations}
             />
+            <h2 className="text-lg font-semibold mb-4">Energy Generation vs Consumption</h2>
             <div className="w-full min-w-[600px]">
                 <Line data={data} options={options} />
             </div>

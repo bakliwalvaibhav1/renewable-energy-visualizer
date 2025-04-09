@@ -1,4 +1,7 @@
 import asyncio
+import csv
+import os
+from datetime import datetime
 
 from sqlalchemy.future import select
 
@@ -7,12 +10,20 @@ from app.core.logger import setup_logger
 from app.core.security import hash_password
 from app.models.base import Base
 from app.models.user import User
+from app.models.energy_generation import EnergyGeneration
+from app.models.energy_consumption import EnergyConsumption
 
 logger = setup_logger(__name__)
 
+DATA_DIR = "data"
+GEN_CSV = os.path.join(DATA_DIR, "energy_generation.csv")
+CONSUMPTION_CSV = os.path.join(DATA_DIR, "energy_consumption.csv")
+
+
 async def init_models():
     """
-    Initializes database tables and creates a demo user if not present.
+    Initializes database tables, creates demo user,
+    and inserts energy data from CSVs.
     """
     logger.info("📦 Starting database table creation...")
     async with engine.begin() as conn:
@@ -39,6 +50,53 @@ async def init_models():
             logger.info(f"✅ Demo user created: {demo_user.email}")
         else:
             logger.info("ℹ️ Demo user already exists. Skipping creation.")
+
+        # ⚡ Insert energy generation data
+        if os.path.exists(GEN_CSV):
+            logger.info(f"📥 Loading energy generation data from '{GEN_CSV}'...")
+            with open(GEN_CSV, newline="") as f:
+                reader = csv.DictReader(f)
+                gen_entries = [
+                    EnergyGeneration(
+                        id=row["id"],
+                        timestamp=datetime.fromisoformat(row["timestamp"]),
+                        energy_kwh=float(row["energy_kwh"]),
+                        source=row["source"],
+                        location=row["location"],
+                        system_id=row["system_id"],
+                    )
+                    for row in reader
+                ]
+            session.add_all(gen_entries)
+            await session.commit()
+            logger.info(f"✅ Inserted {len(gen_entries)} energy generation rows.")
+        else:
+            logger.warning(f"⚠️ Generation CSV not found at '{GEN_CSV}'.")
+
+        # 🔌 Insert energy consumption data
+        if os.path.exists(CONSUMPTION_CSV):
+            logger.info(f"📥 Loading energy consumption data from '{CONSUMPTION_CSV}'...")
+            with open(CONSUMPTION_CSV, newline="") as f:
+                reader = csv.DictReader(f)
+                consumption_entries = [
+                    EnergyConsumption(
+                        id=row["id"],
+                        timestamp=datetime.fromisoformat(row["timestamp"]),
+                        energy_kwh=float(row["energy_kwh"]),
+                        location=row["location"],
+                        sector=row["sector"],
+                        consumer_id=row["consumer_id"],
+                        price=float(row["price"]),
+                        total=float(row["total"]),
+                    )
+                    for row in reader
+                ]
+            session.add_all(consumption_entries)
+            await session.commit()
+            logger.info(f"✅ Inserted {len(consumption_entries)} energy consumption rows.")
+        else:
+            logger.warning(f"⚠️ Consumption CSV not found at '{CONSUMPTION_CSV}'.")
+
 
 if __name__ == "__main__":
     asyncio.run(init_models())

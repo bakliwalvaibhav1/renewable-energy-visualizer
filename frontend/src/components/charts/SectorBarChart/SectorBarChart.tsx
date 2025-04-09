@@ -11,7 +11,6 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-import dayjs from "dayjs";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
@@ -47,7 +46,7 @@ export default function SectorBarChart() {
             {
                 label: "Total Consumption (kWh)",
                 data: values,
-                backgroundColor: ["#22c55e", "#3b82f6", "#f97316"], // Tailwind green-500, blue-500, orange-500
+                backgroundColor: ["#22c55e", "#3b82f6", "#f97316"],
             },
         ],
     };

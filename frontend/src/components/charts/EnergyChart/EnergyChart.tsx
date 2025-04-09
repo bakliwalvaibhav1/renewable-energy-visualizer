@@ -44,7 +44,7 @@ export default function EnergyChart() {
     const [consumptionData, setConsumptionData] = useState<any[]>([]);
     const [generationData, setGenerationData] = useState<any[]>([]);
 
-    const [allLocations, setAllLocations] = useState<string[]>([]);
+    // const [allLocations, setAllLocations] = useState<string[]>([]);
     const [consumptionLocations, setConsumptionLocations] = useState<string[]>([]);
     const [generationLocations, setGenerationLocations] = useState<string[]>([]);
     const [selectedConsumptionLocations, setSelectedConsumptionLocations] = useState<string[]>([]);
@@ -91,9 +91,7 @@ export default function EnergyChart() {
     useEffect(() => {
         const consumptionLocs = new Set(consumptionData.map((item) => item.location));
         const generationLocs = new Set(generationData.map((item) => item.location));
-        const allLocs = new Set([...consumptionLocs, ...generationLocs]);
 
-        setAllLocations(Array.from(allLocs));
         setConsumptionLocations(Array.from(consumptionLocs));
         setGenerationLocations(Array.from(generationLocs));
         setSelectedConsumptionLocations(Array.from(consumptionLocs));

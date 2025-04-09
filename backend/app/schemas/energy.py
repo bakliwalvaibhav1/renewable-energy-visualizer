@@ -17,10 +17,6 @@ class EnergyGenerationCreate(EnergyGenerationBase):
 class EnergyGenerationRead(EnergyGenerationBase):
     id: str
 
-    class Config:
-        orm_mode = True
-
-
 class EnergyConsumptionBase(BaseModel):
     timestamp: datetime
     energy_kwh: float
@@ -37,6 +33,3 @@ class EnergyConsumptionCreate(EnergyConsumptionBase):
 
 class EnergyConsumptionRead(EnergyConsumptionBase):
     id: str
-
-    class Config:
-        orm_mode = True

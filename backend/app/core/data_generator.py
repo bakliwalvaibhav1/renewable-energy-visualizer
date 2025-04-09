@@ -12,16 +12,16 @@ os.makedirs(DATA_DIR, exist_ok=True)
 GEN_CSV = os.path.join(DATA_DIR, "energy_generation.csv")
 CONSUMPTION_CSV = os.path.join(DATA_DIR, "energy_consumption.csv")
 
-START_DATE = datetime(2023, 1, 1)
+START_DATE = datetime(2025, 1, 1)
 END_DATE = datetime(2025, 4, 8)
 
 COUNTRIES = ["USA", "UK", "Australia"]
 SOURCE_TYPES = ["wind", "solar", "biomass"]
-SOURCE_COUNTS = {"wind": 10, "solar": 12, "biomass": 8}
+SOURCE_COUNTS = {"wind": 2, "solar": 2, "biomass": 2}
 LOCATIONS_PER_COUNTRY = {
-    "USA": ["New York", "Texas", "California"],
-    "UK": ["London", "Manchester", "Bristol"],
-    "Australia": ["Sydney", "Melbourne", "Brisbane"],
+    "USA": ["New York", "California"],
+    "UK": ["London", "Manchester"],
+    "Australia": ["Sydney", "Melbourne"],
 }
 SECTORS = ["residential", "commercial", "industrial"]
 PRICE_MAP = {

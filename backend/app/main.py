@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes import auth
+from app.routes import energy
 
 app = FastAPI()
 
@@ -23,3 +24,5 @@ def read_root():
 
 # Include authentication routes
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
+app.include_router(energy.router, prefix="/energy", tags=["Energy"])
+

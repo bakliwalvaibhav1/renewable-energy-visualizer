@@ -43,7 +43,7 @@ cd renewable-energy-visualizer
 
 ### Build and run the entire stack using Docker Compose
 ```bash
-docker-compose up --build
+docker-compose up -d
 ```
 
 ### Access the application:

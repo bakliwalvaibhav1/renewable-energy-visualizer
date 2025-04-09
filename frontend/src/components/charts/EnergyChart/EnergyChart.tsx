@@ -29,7 +29,7 @@ ChartJS.register(
 export default function EnergyChart() {
     const dateList = useMemo(() => {
         const dates = [];
-        let current = dayjs("2025-01-01");
+        let current = dayjs("2023-01-01");
         const end = dayjs("2025-04-08");
         while (current.isBefore(end) || current.isSame(end)) {
             dates.push(current.format("YYYY-MM-DD"));
@@ -64,8 +64,19 @@ export default function EnergyChart() {
             }
         };
         if (dateList.length > 0) {
-            setDateRange([0, dateList.length - 1]);
+            const defaultStart = dayjs("2025-01-01");
+            const defaultEnd = dayjs("2025-04-08");
+        
+            const startIndex = dateList.findIndex(d => dayjs(d).isSame(defaultStart, "day"));
+            const endIndex = dateList.findIndex(d => dayjs(d).isSame(defaultEnd, "day"));
+        
+            if (startIndex !== -1 && endIndex !== -1) {
+                setDateRange([startIndex, endIndex]);
+            } else {
+                setDateRange([0, dateList.length - 1]);
+            }
         }
+        
 
         fetchConsumption();
         fetchGeneration();
@@ -90,16 +101,31 @@ export default function EnergyChart() {
         );
     });
 
-    const allTimestamps = Array.from(
+
+    // Group and sum by date
+    const groupByDate = (data: any[]) => {
+        const totals: Record<string, number> = {};
+        data.forEach(({ timestamp, energy_kwh }) => {
+            const date = timestamp.split("T")[0];
+            totals[date] = (totals[date] || 0) + energy_kwh;
+        });
+        return totals;
+    };
+
+    const consumptionTotals = groupByDate(filteredConsumption);
+    const generationTotals = groupByDate(filteredGeneration);
+
+    // All unique dates sorted
+    const allDates = Array.from(
         new Set([
-            ...filteredConsumption.map((item) => item.timestamp),
-            ...filteredGeneration.map((item) => item.timestamp),
+            ...Object.keys(consumptionTotals),
+            ...Object.keys(generationTotals),
         ])
     ).sort();
 
-    const labels = allTimestamps;
-    const consumption = filteredConsumption.map((item) => item.energy_kwh);
-    const generation = filteredGeneration.map((item) => item.energy_kwh);
+    const labels = allDates;
+    const consumption = allDates.map((date) => consumptionTotals[date] ?? 0);
+    const generation = allDates.map((date) => generationTotals[date] ?? 0);
 
     const datasets = [];
 
@@ -154,8 +180,8 @@ export default function EnergyChart() {
             },
             y: {
                 min: 0,
-                max: 240,
-                ticks: { stepSize: 20 },
+                max: 2100,
+                ticks: { stepSize: 300 },
                 grid: { display: true },
             },
         },

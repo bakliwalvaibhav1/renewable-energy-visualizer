@@ -70,12 +70,18 @@ export default function Filters({
                                 {children}
                             </div>
                         )}
-                        renderThumb={({ props }) => (
-                            <div
-                                {...props}
-                                className="w-4 h-4 bg-blue-500 rounded-full shadow"
-                            />
-                        )}
+                        renderThumb={({ props, index }) => {
+                            const { key, ...rest } = props;
+                            return (
+                                <div
+                                    key={key ?? index} // fallback if key is undefined
+                                    {...rest}
+                                    className="w-4 h-4 bg-blue-500 rounded-full shadow"
+                                />
+                            );
+                        }}
+                        
+                        
                     />
                     <div className="flex justify-between text-sm mt-2 text-gray-600">
                         <span>{dateList[dateRange[0]] ?? "Start"}</span>

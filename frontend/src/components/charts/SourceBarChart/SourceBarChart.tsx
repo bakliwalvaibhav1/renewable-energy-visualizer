@@ -1,7 +1,4 @@
-// components/charts/SectorBarChart.tsx
-import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { api } from "../../../library/axios";
 import {
     Chart as ChartJS,
     BarElement,
@@ -14,31 +11,21 @@ import {
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
-export default function SectorBarChart() {
-    const [consumptionData, setConsumptionData] = useState<any[]>([]);
+type SourceBarChartProps = {
+    generationData: any[];
+};
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await api.get("/energy/consumption");
-                setConsumptionData(res.data);
-            } catch (err) {
-                console.error("Failed to fetch consumption data", err);
-            }
-        };
+export default function SourceBarChart({ generationData }: SourceBarChartProps) {
 
-        fetchData();
-    }, []);
-
-    // Group data by sector and sum energy
-    const sectorTotals: Record<string, number> = {};
-    consumptionData.forEach((entry) => {
-        const sector = entry.sector;
-        sectorTotals[sector] = (sectorTotals[sector] || 0) + entry.energy_kwh;
+    // Group data by source and sum energy
+    const sourceTotals: Record<string, number> = {};
+    generationData.forEach((entry) => {
+        const source = entry.source;
+        sourceTotals[source] = (sourceTotals[source] || 0) + entry.energy_kwh;
     });
 
-    const labels = Object.keys(sectorTotals);
-    const values = labels.map((sector) => sectorTotals[sector]);
+    const labels = Object.keys(sourceTotals);
+    const values = labels.map((source) => sourceTotals[source]);
 
     const data = {
         labels,
@@ -67,15 +54,15 @@ export default function SectorBarChart() {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    stepSize: 1000,
+                    stepSize: 100000,
                 },
             },
         },
     };
 
     return (
-        <div className="bg-white rounded shadow p-4 mt-4">
-            <h2 className="text-lg font-semibold mb-4">Energy Consumption by Sector</h2>
+        <div className="bg-white rounded shadow p-4">
+            <h2 className="text-lg font-semibold mb-4">Energy Generation by Sector</h2>
             <div className="w-full min-w-[500px]">
                 <Bar data={data} options={options} />
             </div>
